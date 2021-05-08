@@ -9,9 +9,9 @@ let nyt_sentiment; //use to hold sentiment of abstracts
 
 
 //OpenWeather API
-let weatherURL = "";
+let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Manhattan&appid=57b071086f7da3e79c317e3e06b1ab3f";
 let weatherDescr = [];
-let cities = [];
+
 
 //using ml5 sentiment in replacement of node red
 //https://ml5js.org/reference/api-Sentiment/
@@ -19,13 +19,13 @@ const sentiment = ml5.sentiment('movieReviews', modelReady);
 
 function modelReady() { //use as initializer for api calls, need to wait for ml5
   console.log("model loaded!");
-  getData();
-  makePrediction();
+  getNewsData();
+  getWeatherData();
 }
 
 //app.get_nyt_data();
 
-function getData() {
+function getNewsData() {
   $.ajax({
     url: topStoriesURL,
     type: 'get',
@@ -37,6 +37,30 @@ function getData() {
     success: function(data) {
       console.log(data);
       storeTitlesAbstracts(data);
+    }
+  }); //end ajax
+} //end getData
+
+//grab weather for Manhattan
+function getWeatherData() {
+  $.ajax({
+    url: weatherURL,
+    type: 'get',
+    dataType: 'json',
+    error: function(err) {
+      console.log("error with openweather call: ");
+      console.log(err);
+    },
+    success: function(data) {
+      console.log(data);
+      let descr = data.weather[0].description;
+      let temperature = Math.floor((1.8 * (data.main.temp - 273) ) + 32); //convert from K to F
+      console.log("Weather Description: " + descr);
+      console.log("temp: " + temperature);
+      weatherDescr[0] = descr;
+      weatherDescr[1] = temperature;
+
+      displayWeather();
     }
   }); //end ajax
 } //end getData
@@ -53,10 +77,8 @@ function storeTitlesAbstracts(data) {
     newsSentiment(titles);
 }
 
-function makePrediction() {
-  const prediction = sentiment.predict(text);
-  console.log(prediction.score);
-}
+
+
 
 function newsSentiment(inText) {
   const prediction = sentiment.predict(inText);
@@ -81,13 +103,18 @@ function newsSentiment(inText) {
 
 //display titles
 function showTitles() {
-  let htmlStr = "<h4>Here is an update of the top 10 articles: </h4>";
+  let htmlStr = "<h4>Here is an update of the top 10 articles in politics: </h4>";
   for(i = 0; i < 10; i++){
     htmlStr = htmlStr + "<p>" + titleArray[i] + "</p>";
   }
   $(".topTitles").html(htmlStr);
 }
 
+function displayWeather() {
+  let htmlStr = "<p>It's currently " + weatherDescr[0] + " in your location.</p>";
+  htmlStr += "<p>The temperature is " + weatherDescr[1] + " degrees Fahrenheit.</p>";
+  $(".weatherHolder").html(htmlStr);
+}
 
 /*
 function setup() {
