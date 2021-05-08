@@ -1,0 +1,33 @@
+.title {
+  width: 100%;
+  text-align: center;
+}
+
+/*flexbox formatting*/
+.holder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+.weatherHolder {
+  padding: 20px;
+}
+.buttonHolder {
+  width: 75%;
+}
+div h3 {
+  text-align: center;
+}
+/*table formatting*/
+table {
+  display: block;
+  text-align: center;
+}
+td {
+  padding: 40px;
+}
+td:hover {
+  background-color: black;
+  color: white;
+}

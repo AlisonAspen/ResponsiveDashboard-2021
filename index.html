@@ -8,17 +8,24 @@
   <script src="https://unpkg.com/ml5@0.6.1/dist/ml5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
   <script src="scripts/config.js"></script>
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
   <div class="title">
       <h1>Hello, Ally</h1>
+      <h2>Here's your update for today.</h2>
   </div>
   <div class="holder">
-      <div class="weatherHolder">
-          <p>Display Weather info here!</p>
-      </div>
+    <div class="weatherHolder">
+        <p>Display Weather info here!</p>
+          <img src=" http://openweathermap.org/img/wn/10d.png" alt="">
+    </div>
+  </div>
+  <br>
+  <div class="holder">
       <div class="newsOptions">
           <h3>Select the news topics you are interested in:</h3>
+          <!--
           <div class="tableHolder">
             <table>
                 <tr>
@@ -37,12 +44,14 @@
                   <td>Opinion</td>
                 </tr>
             </table>
-          </div>
+          </div> -->
       </div>
       <div class="sentimentHolder">
           <p>put the sentiment scores here</p>
       </div>
-      <button type="button" name="titleToggle" style="display:none" class="titleToggle">View Top Ten Titles</button>
+      <div class="buttonHolder">
+            <button type="button" name="titleToggle" style="display:none" class="titleToggle" onclick="showNegative()">View Top Ten Titles</button>
+      </div>
       <div class="topTitles" style="display:none">
           <p>Put news article titles here</p>
       </div>
