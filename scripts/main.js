@@ -1,6 +1,8 @@
 //global variables:
+var wKey = config.WEATHER_KEY;
+var nytKey = config.NYT_KEY;
 //NYTimes API
-let topStoriesURL = "https://api.nytimes.com/svc/topstories/v2/politics.json?api-key=pDh2vArkKmNIjAiHacG1ucB8laDohYRi" //topstories url
+let topStoriesURL = "https://api.nytimes.com/svc/topstories/v2/politics.json?api-key=" + nytKey; //topstories url
 let abstracts = "";
 let titles = "";
 let titleArray = [];
@@ -9,7 +11,7 @@ let nyt_sentiment; //use to hold sentiment of abstracts
 
 
 //OpenWeather API
-let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Manhattan&appid=57b071086f7da3e79c317e3e06b1ab3f";
+let weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=Manhattan&appid=" + wKey;
 let weatherDescr = [];
 
 
