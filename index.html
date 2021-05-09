@@ -17,44 +17,34 @@
   </div>
   <div class="holder">
     <div class="weatherHolder">
-        <p>Display Weather info here!</p>
+
           <img src=" http://openweathermap.org/img/wn/10d.png" alt="">
     </div>
   </div>
   <br>
   <div class="holder">
+    <div class="newsHolder">
       <div class="newsOptions">
-          <h3>Select the news topics you are interested in:</h3>
-          <!--
-          <div class="tableHolder">
-            <table>
-                <tr>
-                  <td>Arts</td>
-                  <td>Books</td>
-                  <td>Business</td>
-                </tr>
-                <tr>
-                  <td>Fashion</td>
-                  <td>Food</td>
-                  <td>Health</td>
-                </tr>
-                <tr>
-                  <td>Magazine</td>
-                  <td>Movies</td>
-                  <td>Opinion</td>
-                </tr>
-            </table>
-          </div> -->
+        <div class="topicHolder">
+            <h3>Select the news topics you are interested in:</h3>
+              <p onclick="getTopicData('arts')">Arts</p>
+              <p onclick="getTopicData('business')">Business</p>
+              <p onclick="getTopicData('movies')">Movies</p>
+              <p onclick="getTopicData('politics')">Politics</p>
+              <p onclick="getTopicData('opinion')">Opinion</p>
+              <p onclick="getTopicData('world')">World</p>
+          </div>
       </div>
       <div class="sentimentHolder">
-          <p>put the sentiment scores here</p>
+
       </div>
       <div class="buttonHolder">
-            <button type="button" name="titleToggle" style="display:none" class="titleToggle" onclick="showNegative()">View Top Ten Titles</button>
+            <button type="button" name="titleToggle" style="display:none" class="titleToggle" onclick="showNegative()">View News</button>
       </div>
       <div class="topTitles" style="display:none">
-          <p>Put news article titles here</p>
+
       </div>
+    </div>
   </div>
   <script type="text/javascript" src="scripts/main.js"></script>
 </body>

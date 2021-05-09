@@ -7,7 +7,9 @@ let abstracts = "";
 let titles = "";
 let titleArray = [];
 let absArray = [];
+let article_links = [];
 let nyt_sentiment; //use to hold sentiment of abstracts
+let topics = ["politics", "world", "arts"];
 
 
 //OpenWeather API
@@ -36,15 +38,13 @@ const sentiment = ml5.sentiment('movieReviews', modelReady);
 
 function modelReady() { //use as initializer for api calls, need to wait for ml5
   console.log("model loaded!");
-  getNewsData();
-  getWeatherData();
+  //getNewsData();
+  //getWeatherData();
 }
 
-//app.get_nyt_data();
-
-function getNewsData() {
+function getTopicData(topic) {
   $.ajax({
-    url: topStoriesURL,
+    url: "https://api.nytimes.com/svc/topstories/v2/" + topic + ".json?api-key=" + nytKey,
     type: 'get',
     dataType: 'json',
     error: function(err) {
@@ -52,11 +52,11 @@ function getNewsData() {
       console.log(err);
     },
     success: function(data) {
-      console.log(data);
-      storeTitlesAbstracts(data);
+      console.log(data.results[0]);
+      storeTitlesAbstracts(data, topic);
     }
   }); //end ajax
-} //end getData
+}
 
 //grab weather for Manhattan
 function getWeatherData() {
@@ -82,49 +82,48 @@ function getWeatherData() {
   }); //end ajax
 } //end getData
 
-function storeTitlesAbstracts(data) {
+function storeTitlesAbstracts(data, topic) {
     for(i = 0; i < 10; i++) {
         titles += data.results[i].title + " ";
         abstracts += data.results[i].abstract + " ";
         titleArray[i] = data.results[i].title;
         absArray[i] = data.results[i].abstract;
+        article_links[i] = data.results[i].url;
     }
     console.log(abstracts);
     console.log(titles);
-    newsSentiment(titles);
+    newsSentiment(titles, topic);
 }
 
-
-
-
-function newsSentiment(inText) {
+function newsSentiment(inText, topic) {
   const prediction = sentiment.predict(inText);
-  nyt_sentiment = prediction.score;
+  nyt_sentiment = prediction.score.toFixed(2);
   console.log(prediction.score);
   //$(".holder").html("<p>The news today has a sentiment of: " + nyt_sentiment + "</p>");
   if(nyt_sentiment < 0.6) {
-    $(".sentimentHolder").html("<p>The news today is neutral with a score of: " + nyt_sentiment + "</p>");
-    $(".topTitles").css("display", "block");
+    $(".sentimentHolder").html("<p>The " + topic + " news today is neutral with a score of: " + nyt_sentiment + "</p>");
+    //$(".topTitles").css("display", "block");
     showTitles();
   }
   if(nyt_sentiment < 0.5) {
-    $(".sentimentHolder").html("<p>The news today is negative with a score of: " + nyt_sentiment +
-    ". Click the below to receive an update.</p>");
-  //  $("titleToggle").css("display", "block");
-    $(".topTitles").css("dispaly", "none");
+    $(".sentimentHolder").html("<p>The " + topic + " news today is negative with a score of: " + nyt_sentiment +
+    ". If you would still like to see the update, click the below to receive an overview.</p>");
+    $(".topTitles").css("display", "none");
     showTitles();
   }
   else {
-    $(".sentimentHolder").html("<p>The news today is positive with a score of: " + nyt_sentiment + "</p>");
+    $(".sentimentHolder").html("<p>The " + topic +  " news today is positive with a score of: " + nyt_sentiment + "</p>");
     $(".topTitles").css("display", "block");
+    showTitles();
   }
 }
 
 //display titles
 function showTitles() {
-  let htmlStr = "<h3>Here is an update of the top 10 articles in politics: </h3>";
+  let htmlStr = "<h3>Here is your requested news overview: </h3>";
   for(i = 0; i < 10; i++){
-    htmlStr = htmlStr + "<p>" + titleArray[i] + "</p>";
+    htmlStr = htmlStr + "<h4>" + titleArray[i] + "</h4>";
+    htmlStr = htmlStr + "<p>" + absArray[i] + "</p>";
   }
   $(".topTitles").html(htmlStr);
   if(nyt_sentiment < 0.5) {
