@@ -5,11 +5,13 @@ var nytKey = config.NYT_KEY;
 let topStoriesURL = "https://api.nytimes.com/svc/topstories/v2/politics.json?api-key=" + nytKey; //topstories url
 let abstracts = "";
 let titles = "";
+let topics = ["arts", "business", "movies", "opinion", "politics", "world"];
+let topicScores = [];
 let titleArray = [];
 let absArray = [];
 let article_links = [];
 let nyt_sentiment; //use to hold sentiment of abstracts
-let topics = ["politics", "world", "arts"];
+
 
 
 //OpenWeather API
@@ -32,14 +34,56 @@ var icons = {
 }
 
 
+
 //using ml5 sentiment in replacement of node red
 //https://ml5js.org/reference/api-Sentiment/
 const sentiment = ml5.sentiment('movieReviews', modelReady);
 
 function modelReady() { //use as initializer for api calls, need to wait for ml5
   console.log("model loaded!");
-  //getNewsData();
-  //getWeatherData();
+  getWeatherData();
+//  getNewsScores();
+}
+
+function readEmotion() {
+  let inStr = document.getElementById("emotionForm").value;
+  let emotion = sentiment.predict(inStr);
+  console.log("score: " + emotion.score);
+  document.getElementById("emotionForm").value = '';
+  giveEmotionResult(emotion.score);
+}
+
+function giveEmotionResult(score) {
+  let htmlStr = "";
+  if(score > 0.0 && score < 0.4) {
+    console.log("bad day");
+    htmlStr += "<p>Wow, sounds like a bad day, maybe this will help?</p>";
+    htmlStr += "<image class ='happyPic' src='https://www.aspca.org/sites/default/files/blog_no-pet-store-puppies_071620_main.jpg'>";
+    if(weatherDescr[0] != null && weatherDescr[0] == "clear sky") {
+      htmlStr += "<p>The weather is nice, maybe some time outside will help?</p>";
+    }
+    $(".emotionHolder").html(htmlStr);
+  }
+  if(score >= 0.4 && score < 0.6) {
+    console.log("rough day");
+    htmlStr += "<p>Seems like today might be a little rough. Let's see what we can do to help.</p>";
+    $(".emotionHolder").html(htmlStr);
+  }
+  if(score >= 0.6 && score < 0.8) {
+    console.log("decent day");
+    htmlStr += "<p>Having an average day? Let's check the weather...</p>";
+    $(".emotionHolder").html(htmlStr);
+  }
+  if(score >= 0.8 && score < 1.0) {
+    console.log("positive day");
+    htmlStr += "<p>You're pretty positive today! Let's see what else we can do!</p>";
+    $(".emotionHolder").html(htmlStr);
+  }
+  else{
+    console.log("amazing day");
+    htmlStr += "<p>Seems like you're feeling great! You've got this!</p>";
+    $(".emotionHolder").html(htmlStr);
+  }
 }
 
 function getTopicData(topic) {
@@ -52,8 +96,9 @@ function getTopicData(topic) {
       console.log(err);
     },
     success: function(data) {
-      console.log(data.results[0]);
+      //console.log(data.results[0]);
       storeTitlesAbstracts(data, topic);
+
     }
   }); //end ajax
 }
@@ -90,24 +135,27 @@ function storeTitlesAbstracts(data, topic) {
         absArray[i] = data.results[i].abstract;
         article_links[i] = data.results[i].url;
     }
-    console.log(abstracts);
-    console.log(titles);
+    //console.log(abstracts);
+    //console.log(titles);
     newsSentiment(titles, topic);
 }
 
 function newsSentiment(inText, topic) {
+  let htmlStr = "";
   const prediction = sentiment.predict(inText);
   nyt_sentiment = prediction.score.toFixed(2);
   console.log(prediction.score);
-  //$(".holder").html("<p>The news today has a sentiment of: " + nyt_sentiment + "</p>");
   if(nyt_sentiment < 0.6) {
     $(".sentimentHolder").html("<p>The " + topic + " news today is neutral with a score of: " + nyt_sentiment + "</p>");
     //$(".topTitles").css("display", "block");
     showTitles();
   }
   if(nyt_sentiment < 0.5) {
-    $(".sentimentHolder").html("<p>The " + topic + " news today is negative with a score of: " + nyt_sentiment +
+    $(".sentimentHolder").html("<p>&#128121; The " + topic + " news today is negative with a score of: " + nyt_sentiment +
     ". If you would still like to see the update, click the below to receive an overview.</p>");
+    htmlStr = "<p>The " + topic + " news today is negative with a score of: " + nyt_sentiment +
+    ". If you would still like to see the update, click the below to receive an overview.</p>"
+    $(".sentimentHolder").html(htmlStr);
     $(".topTitles").css("display", "none");
     showTitles();
   }
@@ -122,7 +170,8 @@ function newsSentiment(inText, topic) {
 function showTitles() {
   let htmlStr = "<h3>Here is your requested news overview: </h3>";
   for(i = 0; i < 10; i++){
-    htmlStr = htmlStr + "<h4>" + titleArray[i] + "</h4>";
+    //htmlStr = htmlStr + "<h4>" + titleArray[i] + "</h4>";
+    htmlStr += "<a href='" + article_links[i] + "' class='newsLink'>" + titleArray[i] + "</a>";
     htmlStr = htmlStr + "<p>" + absArray[i] + "</p>";
   }
   $(".topTitles").html(htmlStr);
@@ -133,12 +182,29 @@ function showTitles() {
 }
 
 function displayWeather() {
+  let temp = weatherDescr[1];
+  let condition = weatherDescr[0];
   let iconSRC = icons[weatherDescr[0]];
-
-  let htmlStr = "<p>It's currently " + weatherDescr[0] + " in Manhattan.</p>";
-  htmlStr += "<p>The temperature is " + weatherDescr[1] + " degrees Fahrenheit.</p>";
+  let htmlStr = "<p>Current condition: " + condition + "</p>";
+  htmlStr += "<p>Temperature: " + temp + "</p>";
   htmlStr += "<image src='http://openweathermap.org/img/wn/" + iconSRC + " 'alt='http://openweathermap.org/img/wn/10d.png'>";
   $(".weatherHolder").html(htmlStr);
+
+  //change background color based on Temperature
+  if(temp >= 80){
+    $(".weatherParent").css("background-color", "red");
+  }
+  if(temp >= 60 && temp < 80) {
+    $(".weatherParent").css("background-color", "orange");
+  }
+  if(temp >= 40 && temp < 60) {
+    $(".weatherParent").css("background-color", "blue");
+    $(".weatherParent").css("color", "white");
+  }
+  if(temp >= 20 && temp < 40) {
+    $(".weatherParent").css("background-color", "gray");
+    $(".weatherParent").css("color", "white");
+  }
 }
 
 function showNegative(){

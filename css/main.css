@@ -13,7 +13,18 @@
   justify-content: space-around;
   padding: 20px;
   border: 2px solid black;
-
+  margin-top: 20px;
+}
+.weatherParent {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+  border: 2px solid black;
+  margin-top: 20px;
 }
 .weatherHolder {
   padding: 20px;
@@ -38,11 +49,21 @@
   background-color: black;
   color: white;
 }
-
+.happyPic {
+  width: 500px;
+}
+.newsLink {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
 a {
   text-decoration: none;
   color: black;
   padding: 20px;
+}
+h1 {
+  text-align: center;
 }
 div h3 {
   text-align: center;

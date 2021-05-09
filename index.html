@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+  <meta charset="utf-8">
   <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -11,14 +12,21 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <div class="title">
-      <h1>Hello, Ally</h1>
-      <h2>Here's your update for today.</h2>
-  </div>
+  <h1>&#127800; Hello, Ally &#127800;</h1>
   <div class="holder">
-    <div class="weatherHolder">
+    <h2>Tell me how you're feeling today:</h2>
+    <textarea id="emotionForm" name="emotionInput" rows="8" cols="50"></textarea>
+    <button type="button" name="emotionSubmit" onclick="readEmotion()">Enter</button>
+    <div class="emotionHolder">
+        <!--text input sentiment results here -->
+    </div>
+  </div>
 
-          <img src=" http://openweathermap.org/img/wn/10d.png" alt="">
+  <div class="weatherParent">
+    <h3>Manhattan Weather</h3>
+    <div class="weatherHolder">
+      <!--openweathermap api results go here -->
+          <img class="weatherIcon" src=" http://openweathermap.org/img/wn/10d.png" alt="">
     </div>
   </div>
   <br>
@@ -26,7 +34,7 @@
     <div class="newsHolder">
       <div class="newsOptions">
         <div class="topicHolder">
-            <h3>Select the news topics you are interested in:</h3>
+            <h3>Select a news topic below:</h3>
               <p onclick="getTopicData('arts')">Arts</p>
               <p onclick="getTopicData('business')">Business</p>
               <p onclick="getTopicData('movies')">Movies</p>
@@ -36,7 +44,10 @@
           </div>
       </div>
       <div class="sentimentHolder">
+          <!--news sentiment results go here -->
+          <div class="scoreHolder">
 
+          </div>
       </div>
       <div class="buttonHolder">
             <button type="button" name="titleToggle" style="display:none" class="titleToggle" onclick="showNegative()">View News</button>
