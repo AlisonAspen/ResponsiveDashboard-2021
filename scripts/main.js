@@ -5,7 +5,7 @@ var nytKey = config.NYT_KEY;
 let topStoriesURL = "https://api.nytimes.com/svc/topstories/v2/politics.json?api-key=" + nytKey; //topstories url
 let abstracts = "";
 let titles = "";
-let topics = ["arts", "business", "movies", "opinion", "politics", "world"];
+let topics = ["arts", "business", "movies", "opinion", "politics", "world", "us"];
 let topicScores = [];
 let titleArray = [];
 let absArray = [];
@@ -30,7 +30,8 @@ var icons = {
     "mist" : "50n.png",
     "overcast clouds": "04n.png",
     "haze" : "50d.png",
-    "freezing rain" : "13d.png"
+    "freezing rain" : "13d.png",
+    "moderate rain" : "10n.png"
 }
 
 
@@ -198,8 +199,8 @@ function displayWeather() {
     $(".weatherParent").css("background-color", "orange");
   }
   if(temp >= 40 && temp < 60) {
-    $(".weatherParent").css("background-color", "blue");
-    $(".weatherParent").css("color", "white");
+    $(".weatherParent").css("background-color", "#c3dcff");
+  //  $(".weatherParent").css("color", "white");
   }
   if(temp >= 20 && temp < 40) {
     $(".weatherParent").css("background-color", "gray");
