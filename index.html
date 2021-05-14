@@ -9,25 +9,29 @@
   <script src="https://unpkg.com/ml5@0.6.1/dist/ml5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
   <script src="scripts/config.js"></script>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dash.css">
 </head>
 <body>
+  <!--
   <h1>&#127800; Hello, Ally &#127800;</h1>
   <div class="holder">
     <h2>Tell me how you're feeling today:</h2>
     <textarea id="emotionForm" name="emotionInput" rows="8" cols="50"></textarea>
     <button type="button" name="emotionSubmit" onclick="readEmotion()">Enter</button>
-    <div class="emotionHolder">
+    <div class="emotionHolder"> -->
         <!--text input sentiment results here -->
-    </div>
+  <!--  </div>
   </div>
 
   <div class="weatherParent">
     <h3>Manhattan Weather</h3>
-    <div class="weatherHolder">
+    <div class="weatherHolder"> -->
       <!--openweathermap api results go here -->
-          <img class="weatherIcon" src=" http://openweathermap.org/img/wn/10d.png" alt="">
+        <!--  <img class="weatherIcon" src=" http://openweathermap.org/img/wn/10d.png" alt="">
     </div>
+    <div class="weatherSuggest"> -->
+        <!--make suggestion based on weather-->
+  <!--  </div>
   </div>
   <br>
   <div class="holder">
@@ -43,9 +47,9 @@
               <p onclick="getTopicData('world')">World</p>
               <p onclick="getTopicData('us')">U.S.</p>
           </div>
-      </div>
+        </div>
       <div class="sentimentHolder">
-          <!--news sentiment results go here -->
+
           <div class="scoreHolder">
 
           </div>
@@ -57,6 +61,36 @@
 
       </div>
     </div>
+  </div>
+ -->
+  <!--flexbox reformatting-->
+  <div class="content">
+    <div class="holder">
+      <h3>Tell me how you're feeling today:</h3>
+      <textarea id="emotionForm" name="emotionInput" rows="2" cols="20"></textarea>
+      <button type="button" name="emotionSubmit" onclick="readEmotion()">Enter</button>
+      <div class="emotionHolder">
+          <!--text input sentiment results here -->
+        </div>
+    </div>
+    <div class="newsOptions">
+      <div class="topicHolder">
+          <h3>Select a news topic below:</h3>
+            <p onclick="getTopicData('arts')">Arts</p>
+            <p onclick="getTopicData('business')">Business</p>
+            <p onclick="getTopicData('movies')">Movies</p>
+            <p onclick="getTopicData('politics')">Politics</p>
+            <p onclick="getTopicData('opinion')">Opinion</p>
+            <p onclick="getTopicData('world')">World</p>
+            <p onclick="getTopicData('us')">U.S.</p>
+        </div>
+      </div>
+      <div class="sentimentHolder">
+          <p>News score here!</p>
+      </div>
+      <div class="topTitles">
+          <p>titles will be displayed here</p>
+      </div>
   </div>
   <script type="text/javascript" src="scripts/main.js"></script>
 </body>

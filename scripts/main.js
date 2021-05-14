@@ -42,7 +42,7 @@ const sentiment = ml5.sentiment('movieReviews', modelReady);
 
 function modelReady() { //use as initializer for api calls, need to wait for ml5
   console.log("model loaded!");
-  getWeatherData();
+  //getWeatherData();
 //  getNewsScores();
 }
 
@@ -103,7 +103,7 @@ function getTopicData(topic) {
     }
   }); //end ajax
 }
-
+/*
 //grab weather for Manhattan
 function getWeatherData() {
   $.ajax({
@@ -126,7 +126,7 @@ function getWeatherData() {
       displayWeather();
     }
   }); //end ajax
-} //end getData
+} //end getData */
 
 function storeTitlesAbstracts(data, topic) {
     for(i = 0; i < 10; i++) {
@@ -149,6 +149,7 @@ function newsSentiment(inText, topic) {
   if(nyt_sentiment < 0.6) {
     $(".sentimentHolder").html("<p>The " + topic + " news today is neutral with a score of: " + nyt_sentiment + "</p>");
     //$(".topTitles").css("display", "block");
+    $(".newsHolder").css("background-color", "#e5e5e5");
     showTitles();
   }
   if(nyt_sentiment < 0.5) {
@@ -157,12 +158,14 @@ function newsSentiment(inText, topic) {
     htmlStr = "<p>The " + topic + " news today is negative with a score of: " + nyt_sentiment +
     ". If you would still like to see the update, click the below to receive an overview.</p>"
     $(".sentimentHolder").html(htmlStr);
+    $(".newsHolder").css("background-color", "#a64c4c");
     $(".topTitles").css("display", "none");
     showTitles();
   }
   else {
     $(".sentimentHolder").html("<p>The " + topic +  " news today is positive with a score of: " + nyt_sentiment + "</p>");
     $(".topTitles").css("display", "block");
+    $(".newsHolder").css("background-color", "#e5e5e5");
     showTitles();
   }
 }
@@ -181,11 +184,12 @@ function showTitles() {
     $(".titleToggle").css("display", "block");
   }
 }
-
+/*
 function displayWeather() {
   let temp = weatherDescr[1];
   let condition = weatherDescr[0];
   let iconSRC = icons[weatherDescr[0]];
+
   let htmlStr = "<p>Current condition: " + condition + "</p>";
   htmlStr += "<p>Temperature: " + temp + "</p>";
   htmlStr += "<image src='http://openweathermap.org/img/wn/" + iconSRC + " 'alt='http://openweathermap.org/img/wn/10d.png'>";
@@ -206,8 +210,20 @@ function displayWeather() {
     $(".weatherParent").css("background-color", "gray");
     $(".weatherParent").css("color", "white");
   }
+  displayCondition(condition);
 }
-
+function displayCondition(cdt) {
+  let conditionStr = "";
+  if(cdt.includes("rain")) {
+    conditionStr = "<h4><strong>It's raining out, a great time to catch up on work!</h4>";
+    $(".weatherSuggest").html(conditionStr);
+  }
+  if(cdt.includes("sun")) {
+    conditionStr = "<h4></h4>";
+    $(".weatherSuggest").html(conditionStr);
+  }
+}
+*/
 function showNegative(){
   $(".topTitles").css("display", "block");
 }

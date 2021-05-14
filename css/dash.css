@@ -1,0 +1,57 @@
+/*testing new html layout*/
+* {
+  font-family: Helvetica, sans-serif;
+}
+.content {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.newsOptions {
+  width: 25%;
+  border: 5px solid black;
+  padding: 25px;
+  text-align: center;
+}
+.holder {
+  width: 40%;
+  border: 5px solid black;
+  padding: 25px;
+}
+.topicHolder p {
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px;
+}
+.topicHolder p:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+.sentimentHolder {
+  margin-top: 25px;
+  width: 50%;
+  padding: 25px;
+  border: 5px solid black;
+  text-align: center;
+}
+
+.topTitles {
+  margin-top: 25px;
+  border: 5px solid black;
+  width: 50%;
+  text-align: center;
+  padding: 25px;
+}
+.topTitles a {
+  text-decoration: none;
+  color: black;
+  font-size: 24px;
+}
+
+button:hover {
+  cursor: pointer;
+}
