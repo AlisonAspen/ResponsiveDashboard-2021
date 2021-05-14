@@ -11,6 +11,7 @@ let titleArray = [];
 let absArray = [];
 let article_links = [];
 let nyt_sentiment; //use to hold sentiment of abstracts
+let token_score = [];
 
 
 
@@ -48,6 +49,7 @@ function modelReady() { //use as initializer for api calls, need to wait for ml5
 
 function readEmotion() {
   let inStr = document.getElementById("emotionForm").value;
+
   let emotion = sentiment.predict(inStr);
   console.log("score: " + emotion.score);
   document.getElementById("emotionForm").value = '';
@@ -80,11 +82,7 @@ function giveEmotionResult(score) {
     htmlStr += "<p>You're pretty positive today! Let's see what else we can do!</p>";
     $(".emotionHolder").html(htmlStr);
   }
-  else{
-    console.log("amazing day");
-    htmlStr += "<p>Seems like you're feeling great! You've got this!</p>";
-    $(".emotionHolder").html(htmlStr);
-  }
+  
 }
 
 function getTopicData(topic) {
@@ -144,6 +142,7 @@ function storeTitlesAbstracts(data, topic) {
 function newsSentiment(inText, topic) {
   let htmlStr = "";
   const prediction = sentiment.predict(inText);
+  console.log("prediction: " + prediction);
   nyt_sentiment = prediction.score.toFixed(2);
   console.log(prediction.score);
   if(nyt_sentiment < 0.6) {
@@ -156,7 +155,8 @@ function newsSentiment(inText, topic) {
     $(".sentimentHolder").html("<p>&#128121; The " + topic + " news today is negative with a score of: " + nyt_sentiment +
     ". If you would still like to see the update, click the below to receive an overview.</p>");
     htmlStr = "<p>The " + topic + " news today is negative with a score of: " + nyt_sentiment +
-    ". If you would still like to see the update, click the below to receive an overview.</p>"
+    ". If you would still like to see the update, click the below to receive an overview.</p>";
+    htmlStr += "<div class='buttonHolder'><button type='button' name='titleToggle' style='display:none' class='titleToggle' onclick='showNegative()'>View News</button></div>";
     $(".sentimentHolder").html(htmlStr);
     $(".newsHolder").css("background-color", "#a64c4c");
     $(".topTitles").css("display", "none");
@@ -224,6 +224,6 @@ function displayCondition(cdt) {
   }
 }
 */
-function showNegative(){
+function showNegative() {
   $(".topTitles").css("display", "block");
 }
